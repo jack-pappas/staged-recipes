@@ -1,0 +1,47 @@
+schema_version: 1
+
+context:
+  python_min: "3.10"
+  version: "1.1.8"
+
+package:
+  name: diffcp
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/d/diffcp/diffcp-${{ version }}.tar.gz
+  sha256: 364f999530314730eff003719779da31b2824d7c1acce4af03fb0aaceb82400b
+
+build:
+  number: 0
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - scikit-build-core
+    - pybind11 >=2.4
+    - pip
+  run:
+    - python >=${{ python_min }}
+    - cvxpy >=1.6.3
+    - threadpoolctl >=1.1
+
+tests:
+  - python:
+      imports:
+        - diffcp
+      pip_check: true
+      python_version: ${{ python_min }}.*
+
+about:
+  summary: A library to compute gradients for convex optimization problems
+  license: Apache-2.0
+  license_file:
+    - LICENSE
+  homepage: https://github.com/cvxgrp/diffcp/
+
+extra:
+  recipe-maintainers:
+    - jack-pappas
